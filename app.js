@@ -1,10 +1,14 @@
 var express = require('express')
   , passport = require('passport')
+  , app = express();
   , LocalStrategy = require('passport-local').Strategy
   , mongodb = require('mongodb')
   , mongoose = require('mongoose')
   , bcrypt = require('bcrypt-nodejs')
-  , SALT_WORK_FACTOR = 10;
+  , SALT_WORK_FACTOR = 10
+  , http = require('http')
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server)
 
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
@@ -161,7 +165,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 
-var app = express();
+
 
 // configure Express
 app.configure(function() {
@@ -266,8 +270,8 @@ app.post('/register', function(req, res) {
 
 require('./routes')(app, mongoose)
 
-app.listen(port, function() {
-  log.log('Express server listening on port 3000');
+server.listen(port, function() {
+  log.log('Express server listening on port :' + port);
 });
 
 
