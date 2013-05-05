@@ -1,16 +1,27 @@
 debate
 ======
 
-debate website 
+debate website
 
-Install instructions: clone the repository with: Http://github.com/dave911d/debate
+Install instructions:
+=====================
 
-go into the directory and run: Npm install
+1. clone the repository with: git clone  https://github.com/dave911d/debate
 
-to run the app simply run: Node app
+2. go into the directory and run: npm install
 
-First make sure mongodb is running simply have another window open with mongod running.
+3. to run the app simply run: node app.js
+
+4. go to http://localhost:3000
+
+Make sure mongodb is running before starting the server.
+
+
 
 Requirements:
 node 0.10.4
-Mongodb Latest
+MongoDB Latest
+
+
+
+
