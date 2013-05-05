@@ -1,6 +1,6 @@
 var express = require('express')
   , passport = require('passport')
-  , app = express();
+  , app = express()
   , LocalStrategy = require('passport-local').Strategy
   , mongodb = require('mongodb')
   , mongoose = require('mongoose')
