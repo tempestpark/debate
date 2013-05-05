@@ -3,7 +3,7 @@ var express = require('express')
   , LocalStrategy = require('passport-local').Strategy
   , mongodb = require('mongodb')
   , mongoose = require('mongoose')
-  , bcrypt = require('bcrypt')
+  , bcrypt = require('bcrypt-nodejs')
   , SALT_WORK_FACTOR = 10;
 
 if(process.env.VCAP_SERVICES){
@@ -69,7 +69,11 @@ userSchema.pre('save', function(next) {
 	bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		if(err) return next(err);
 
-		bcrypt.hash(user.password, salt, function(err, hash) {
+		bcrypt.hash(user.password, salt,
+    function() {
+      //needed for some reason..?
+    },
+    function(err, hash) {
 			if(err) return next(err);
 			user.password = hash;
 			next();
@@ -164,7 +168,7 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.engine('ejs', require('ejs-locals'));
-  app.use(express.logger());
+  app.use(express.logger('dev'));
   app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
