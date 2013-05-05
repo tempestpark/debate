@@ -3,18 +3,7 @@
   "version": "0.0.1",
   "Authors": "James Spencer,Jackson Roberts, David Johns",
   "dependencies": {
-<<<<<<< HEAD
-    "express": "3.x.x",
-    "connect-flash": "0.1.x",
-    "ejs": ">= 0.0.0",
-    "ejs-locals": ">= 0.0.0",
-    "passport": ">= 0.0.0",
-    "bcrypt-nodejs":"0.0.3",
-    "passport-local": ">= 0.0.0",
-    "mongodb": ">= 0.0.0",
-    "mongoose": ">= 0.0.0",
-    "node-logentries": "0.0.2"
-=======
+
     "express": "~3.2.2",
     "connect-flash": "~0.1.0",
     "ejs": "~0.8.3",
@@ -25,8 +14,7 @@
     "mongoose": "~3.6.9",
     "bcrypt-nodejs": "0.0.3",
     "node-logentries": "0.0.2",
-    "socket.io": "~0.9.14"
->>>>>>> 2fe2bbce2245924d762dcdde0f205b0eaa0b8bf5
+    "socket.io": "~0.9.13"
   },
   "scripts": {
     "start": "node app.js"
