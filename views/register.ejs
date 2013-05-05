@@ -34,8 +34,15 @@
       }
 
     </style>
-
-<form action="/register" method="post" class="form-signin">
+<script>
+function validate(form) {
+	var ok = true
+	for(var i = 0; i < form.childElementCount; i++){if(form.children[i].value === "" || form.children[i].value === null){ok=false}}
+	if(!ok){alert('Please fill in all the fields')}
+	return ok;
+}
+</script>
+<form action="/register" method="post" class="form-signin" onsubmit="return validate(this);">
 	    <input type="text" name="fullname" class="input-block-level" placeholder="Fullname">
 	    <%if(taken.username){%><div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Whoops!</strong> Username already taken</div><%}%>
 	    <input type="text" name="username" class="input-block-level" placeholder="Username">
@@ -44,5 +51,5 @@
         <%if(taken.invalidEmail){%><div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Whoops!</strong> Email address invalid</div><%}%>
         <input type="text" name="email" class="input-block-level" placeholder="Email">
         <div class="divider"></div>
-        <button class="btn btn-large btn-primary" type="submit">Register</button>
+        <button class="btn btn-large btn-primary" type="submit" value="abcd">Register</button>
 </form>
