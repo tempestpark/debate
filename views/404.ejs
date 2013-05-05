@@ -5,7 +5,8 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>Debate - Error 404</title>
-	<link href='http://fonts.googleapis.com/css?family=Bangers&amp;v2' rel='stylesheet' type='text/css' />	
+	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles/reset.css" />
 	<link rel="stylesheet" type="text/css" href="styles/main.css" />	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -39,8 +40,10 @@
 			</div>
 			<div class="search_box">
 				<form id="searchform" action="" method="get" action="/search">
-					<input id="s" name="q" class="inputField" type="text" name="s" onblur="if (this.value == '') {this.value = 'Or search for new one...';}" onfocus="if (this.value == 'Or search for new one...') {this.value = '';}" value="Or search for new one..." />
-					<input id="searchsubmit" class="btn-search" type="submit" value="" />
+					<div class="input-append">
+					  <input id="s" name="q" class="span3 input-mysize" type="text" name="s" placeholder="Or search for new one..." />  
+					  <button class="btn btn-info" type="submit">Go!</button>
+                    </div>
 				</form>
 			</div>
 		</div>

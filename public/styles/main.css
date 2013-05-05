@@ -55,8 +55,8 @@ a img {
 
 /* Text */
 #text_1 {
-	font-family: 'Bangers', cursive;
-	font-size: 30px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 25px;
 	color: #393939;
 	line-height: 28px;
 	position: absolute;
@@ -65,8 +65,8 @@ a img {
 }
 
 #text_2 {
-	font-family: 'Bangers', cursive;
-	font-size: 90px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 80px;
 	color: #2d2d2d;
 	width: 380px;
 	padding-right: 10px; 
@@ -76,8 +76,8 @@ a img {
 }
 
 #text_3 {
-	font-family: 'Bangers', cursive;
-	font-size: 40px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 30px;
 	color: #393939;
 	line-height: 32px;
 	text-align: right;
@@ -89,7 +89,7 @@ a img {
 }
 
 #text_4 {
-	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-family: 'Raleway', sans-serif;
 	font-size: 18px;
 	color: #4c4c4c;
 	text-transform: uppercase;
@@ -100,7 +100,7 @@ a img {
 }
 
 #text_5 {
-	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-family: 'Raleway', sans-serif;
 	font-size: 12px;
 	text-transform: uppercase;
 	position: absolute;
@@ -155,3 +155,5 @@ a img {
 .btn-search:hover {
 	background: url("../images/search_btn.png") no-repeat scroll 0 -36px transparent;
 }
+
+.input-mysize { width: 150px }

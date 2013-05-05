@@ -17,15 +17,16 @@ else{
 
 var log = {
   log:function(d, l){
-  if(l!='welcome') {
-    if(!l){l='debug';}
-    l=l.toUpperCase();
-    l+=": ";
-    if(l.toLowerCase()=='error'){l = l.red;}else{l=l.green;}
+    if(l!='welcome') {
+      if(!l){l='debug';}
+      l=l.toUpperCase();
+      l+=": ";
+      if(l.toLowerCase()=='error'){l = l.red;}else{l=l.green;}
+    }
+    if(l == 'welcome'){l="";}
+    process.stdout.write(l + d + '\n');
   }
-  if(l == 'welcome'){l="";}
-  process.stdout.write(l + d + '\n');
-}};
+};
 
 log.log('Debate, by James Spencer, David Johns and Jackson Roberts; Copyright (c) 2013; MIT Licenced'.yellow, 'welcome');
 
@@ -41,6 +42,7 @@ var generate_mongo_url = function(obj){
         return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
     }
 };
+
 var mongourl = generate_mongo_url(mongo);
 
 mongoose.connect(mongourl);
@@ -266,10 +268,10 @@ app.post('/register', function(req, res) {
   var username = req.param('username');
   var password = req.param('password');
   var email = req.param('email');
-  if(username == null || password == null || email == null || username == "" || password == "" || email == "") {
-    res.redirect('/register?err=4')
+if(username === null || password === null || email === null || username === "" || password === "" || email === "") {
+    res.redirect('/register?err=4');
   } else if(!validateEmail(email)) {
-    res.redirect('/register?err=5')
+    res.redirect('/register?err=5');
   } else {
   var usr = new User({ username: username, email: email, password: password });
   usr.save(function(err) {
@@ -277,31 +279,31 @@ app.post('/register', function(req, res) {
       console.log(err.key);
       if(err && err.code == 11000) {
         if(JSON.stringify(err).toString().indexOf('username') > -1) {
-          res.redirect('/register?err=3')
+          res.redirect('/register?err=3');
         } else if(JSON.stringify(err).toString().indexOf('email') > -1) {
-          res.redirect('/register?err=2')
+          res.redirect('/register?err=2');
         }
       }
     } else {
       console.log('user: ' + usr.username + " saved.");
-        res.redirect('/login')
+        res.redirect('/login');
     }
 
 });
   }
 });
 
-function validateEmail(email) { 
+function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
-} 
+}
 
 
 require('./routes')(app, mongoose);
 
 app.get('*', function(req, res){
-  res.render('404', { user: req.user })
-})
+  res.render('404', { user: req.user });
+});
 
 server.listen(port, function() {
   log.log('Express: '.red + 'Server listening on port :'.green + port.toString().magenta);
