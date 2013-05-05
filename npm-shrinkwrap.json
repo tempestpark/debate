@@ -1,0 +1,234 @@
+{
+  "name": "Debate",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": {
+      "version": "3.2.2",
+      "from": "express@3.x.x",
+      "dependencies": {
+        "connect": {
+          "version": "2.7.8",
+          "from": "connect@2.7.8",
+          "dependencies": {
+            "formidable": {
+              "version": "1.0.13",
+              "from": "formidable@1.0.13"
+            },
+            "bytes": {
+              "version": "0.2.0",
+              "from": "bytes@0.2.0"
+            },
+            "pause": {
+              "version": "0.0.1",
+              "from": "pause@0.0.1"
+            }
+          }
+        },
+        "commander": {
+          "version": "0.6.1",
+          "from": "commander@0.6.1"
+        },
+        "range-parser": {
+          "version": "0.0.4",
+          "from": "range-parser@0.0.4"
+        },
+        "mkdirp": {
+          "version": "0.3.4",
+          "from": "mkdirp@0.3.4"
+        },
+        "cookie": {
+          "version": "0.0.5",
+          "from": "cookie@0.0.5"
+        },
+        "buffer-crc32": {
+          "version": "0.2.1",
+          "from": "buffer-crc32@0.2.1"
+        },
+        "fresh": {
+          "version": "0.1.0",
+          "from": "fresh@0.1.0"
+        },
+        "methods": {
+          "version": "0.0.1",
+          "from": "methods@0.0.1"
+        },
+        "send": {
+          "version": "0.1.0",
+          "from": "send@0.1.0",
+          "dependencies": {
+            "mime": {
+              "version": "1.2.6",
+              "from": "mime@1.2.6"
+            }
+          }
+        },
+        "cookie-signature": {
+          "version": "1.0.1",
+          "from": "cookie-signature@1.0.1"
+        },
+        "debug": {
+          "version": "0.7.2",
+          "from": "debug@*"
+        },
+        "qs": {
+          "version": "0.6.3",
+          "from": "qs@0.6.3"
+        }
+      }
+    },
+    "connect-flash": {
+      "version": "0.1.0",
+      "from": "connect-flash@0.1.x"
+    },
+    "ejs": {
+      "version": "0.8.3",
+      "from": "ejs@>= 0.0.0"
+    },
+    "ejs-locals": {
+      "version": "1.0.2",
+      "from": "ejs-locals@>= 0.0.0"
+    },
+    "passport": {
+      "version": "0.1.16",
+      "from": "passport@>= 0.0.0",
+      "dependencies": {
+        "pkginfo": {
+          "version": "0.2.3",
+          "from": "pkginfo@0.2.x"
+        }
+      }
+    },
+    "passport-local": {
+      "version": "0.1.6",
+      "from": "passport-local@>= 0.0.0",
+      "dependencies": {
+        "pkginfo": {
+          "version": "0.2.3",
+          "from": "pkginfo@0.2.x"
+        }
+      }
+    },
+    "mongodb": {
+      "version": "1.3.0",
+      "from": "mongodb@>= 0.0.0",
+      "dependencies": {
+        "bson": {
+          "version": "0.1.8",
+          "from": "bson@0.1.8"
+        },
+        "kerberos": {
+          "version": "0.0.2",
+          "from": "kerberos@latest"
+        }
+      }
+    },
+    "mongoose": {
+      "version": "3.6.9",
+      "from": "mongoose@>= 0.0.0",
+      "dependencies": {
+        "hooks": {
+          "version": "0.2.1",
+          "from": "hooks@0.2.1"
+        },
+        "ms": {
+          "version": "0.1.0",
+          "from": "ms@0.1.0"
+        },
+        "sliced": {
+          "version": "0.0.3",
+          "from": "sliced@0.0.3"
+        },
+        "muri": {
+          "version": "0.3.1",
+          "from": "muri@0.3.1"
+        },
+        "mpromise": {
+          "version": "0.2.1",
+          "from": "mpromise@0.2.1",
+          "dependencies": {
+            "sliced": {
+              "version": "0.0.4",
+              "from": "sliced@0.0.4"
+            }
+          }
+        },
+        "mpath": {
+          "version": "0.1.1",
+          "from": "mpath@0.1.1"
+        }
+      }
+    },
+    "bcrypt-nodejs": {
+      "version": "0.0.3",
+      "from": "bcrypt-nodejs@>= 0.0.0"
+    },
+    "node-logentries": {
+      "version": "0.0.2",
+      "from": "node-logentries@0.0.2"
+    },
+    "socket.io": {
+      "version": "0.9.14",
+      "from": "socket.io@",
+      "dependencies": {
+        "socket.io-client": {
+          "version": "0.9.11",
+          "from": "socket.io-client@0.9.11",
+          "dependencies": {
+            "uglify-js": {
+              "version": "1.2.5",
+              "from": "uglify-js@1.2.5"
+            },
+            "ws": {
+              "version": "0.4.25",
+              "from": "ws@0.4.x",
+              "dependencies": {
+                "commander": {
+                  "version": "0.6.1",
+                  "from": "commander@~0.6.1"
+                },
+                "tinycolor": {
+                  "version": "0.0.1",
+                  "from": "tinycolor@0.x"
+                },
+                "options": {
+                  "version": "0.0.5",
+                  "from": "options@latest"
+                }
+              }
+            },
+            "xmlhttprequest": {
+              "version": "1.4.2",
+              "from": "xmlhttprequest@1.4.2"
+            },
+            "active-x-obfuscator": {
+              "version": "0.0.1",
+              "from": "active-x-obfuscator@0.0.1",
+              "dependencies": {
+                "zeparser": {
+                  "version": "0.0.5",
+                  "from": "zeparser@0.0.5"
+                }
+              }
+            }
+          }
+        },
+        "policyfile": {
+          "version": "0.0.4",
+          "from": "policyfile@0.0.4"
+        },
+        "base64id": {
+          "version": "0.1.0",
+          "from": "base64id@0.1.0"
+        },
+        "redis": {
+          "version": "0.7.3",
+          "from": "redis@0.7.3"
+        }
+      }
+    },
+    "colors": {
+      "version": "0.6.0-1",
+      "from": "colors@"
+    }
+  }
+}

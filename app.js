@@ -1,14 +1,4 @@
-var express = require('express')
-  , passport = require('passport')
-  , app = express()
-  , LocalStrategy = require('passport-local').Strategy
-  , mongodb = require('mongodb')
-  , mongoose = require('mongoose')
-  , bcrypt = require('bcrypt-nodejs')
-  , SALT_WORK_FACTOR = 10
-  , http = require('http')
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server)
+var express=require("express"),passport=require("passport"),app=express(),LocalStrategy=require("passport-local").Strategy,mongodb=require("mongodb"),mongoose=require("mongoose"),bcrypt=require("bcrypt-nodejs"),SALT_WORK_FACTOR=10,http=require("http"),server=http.createServer(app),io=require("socket.io").listen(server),colors=require("colors");
 
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
@@ -22,13 +12,22 @@ else{
         "password":"",
         "name":"",
         "db":"db"
-    }
+    };
 }
 
-var logentries = require('node-logentries');
-var log = logentries.logger({
-  token:'2d9a3fff-14bf-473e-b439-532c5a29d8dd'
-});
+var log = {
+  log:function(d, l){
+  if(l!='welcome') {
+    if(!l){l='debug';}
+    l=l.toUpperCase();
+    l+=": ";
+    if(l.toLowerCase()=='error'){l = l.red;}else{l=l.green;}
+  }
+  if(l == 'welcome'){l="";}
+  process.stdout.write(l + d + '\n');
+}};
+
+log.log('Debate, by James Spencer, David Johns and Jackson Roberts; Copyright (c) 2013; MIT Licenced'.yellow, 'welcome');
 
 //function to connect to production or local db
 var generate_mongo_url = function(obj){
@@ -41,14 +40,17 @@ var generate_mongo_url = function(obj){
     else{
         return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
     }
-}
+};
 var mongourl = generate_mongo_url(mongo);
 
 mongoose.connect(mongourl);
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', function(err) {
+  var e = err.toString();
+  log.log('DB Connection '.red + e.red, 'error');
+});
 db.once('open', function callback() {
-  log.log('Connected to DB');
+  log.log('Mongoose: '.red  + 'Connected to DB'.green);
 });
 
 var port = process.env.VMC_APP_PORT || 3000;
@@ -192,8 +194,8 @@ app.configure(function() {
   // persistent login sessions (recommended).
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  app.use(app.router);
 });
 
 
@@ -225,13 +227,13 @@ app.post('/login',
     res.redirect('/');
   });
 */
-  
+
 // POST /login
 //   This is an alternative implementation that uses a custom callback to
 //   acheive the same functionality.
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err) };
+    if (err) { return next(err); }
     if (!user) {
       req.session.messages =  [info.message];
       return res.redirect('/login');
@@ -248,30 +250,61 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-app.get('/register', ensureNotAuthenticated, function(req, res) {
-    res.render('register', {user: req.user});
-  });
+app.get('/register', function(req, res){
+  var taken = {username:false, email:false};
+  if(req.param('err') == 2) {
+    taken = {username:false, email:true,invalidEmail:false};
+  } else if(req.param('err') == 3) {
+    taken = {username:true, email:false,invalidEmail:false};
+  } else if(req.param('err') == 5) {
+    taken = {username:false, email:false,invalidEmail:true};
+  }
+    res.render('register', { user: req.user, message: req.session.messages, error:false, taken:taken });
+});
 
 app.post('/register', function(req, res) {
-	var username = req.param('username');
-	var email = req.param('email');
-	var password = req.param('password');
-	var fullname = req.param('fullname');
-	var usr = new User({ username: username, email: email, password: password, fullname: fullname });
-	usr.save(function(err) {
-	  if(err) {
- 	   log.log(err);
-	  } else {
- 	   log.log('user: ' + usr.username + " saved.");
-	 };
-  res.redirect('/login');
+  var username = req.param('username');
+  var password = req.param('password');
+  var email = req.param('email');
+  if(username == null || password == null || email == null || username == "" || password == "" || email == "") {
+    res.redirect('/register?err=4')
+  } else if(!validateEmail(email)) {
+    res.redirect('/register?err=5')
+  } else {
+  var usr = new User({ username: username, email: email, password: password });
+  usr.save(function(err) {
+    if(err) {
+      console.log(err.key);
+      if(err && err.code == 11000) {
+        if(JSON.stringify(err).toString().indexOf('username') > -1) {
+          res.redirect('/register?err=3')
+        } else if(JSON.stringify(err).toString().indexOf('email') > -1) {
+          res.redirect('/register?err=2')
+        }
+      }
+    } else {
+      console.log('user: ' + usr.username + " saved.");
+        res.redirect('/login')
+    }
+
 });
+  }
 });
 
-require('./routes')(app, mongoose)
+function validateEmail(email) { 
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+} 
+
+
+require('./routes')(app, mongoose);
+
+app.get('*', function(req, res){
+  res.render('404', { user: req.user })
+})
 
 server.listen(port, function() {
-  log.log('Express server listening on port :' + port);
+  log.log('Express: '.red + 'Server listening on port :'.green + port.toString().magenta);
 });
 
 
@@ -282,9 +315,9 @@ server.listen(port, function() {
 //   login page.
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+  res.redirect('/login');
 }
 function ensureNotAuthenticated(req, res, next) {
   if (!req.isAuthenticated()) { return next(); }
-  res.redirect('/')
+  res.redirect('/');
 }
