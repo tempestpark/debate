@@ -37,8 +37,12 @@
 
 <form action="/register" method="post" class="form-signin">
 	    <input type="text" name="fullname" class="input-block-level" placeholder="Fullname">
+	    <%if(taken.username){%><div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Whoops!</strong> Username already taken</div><%}%>
 	    <input type="text" name="username" class="input-block-level" placeholder="Username">
         <input type="password" name="password" class="input-block-level" placeholder="Password">
+        <%if(taken.email){%><div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Whoops!</strong> Email already bound to account</div><%}%>
+        <%if(taken.invalidEmail){%><div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Whoops!</strong> Email address invalid</div><%}%>
         <input type="text" name="email" class="input-block-level" placeholder="Email">
+        <div class="divider"></div>
         <button class="btn btn-large btn-primary" type="submit">Register</button>
 </form>
