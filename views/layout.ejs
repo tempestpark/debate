@@ -18,6 +18,14 @@
         padding-bottom: 40px;
       }
     </style>
+<script>
+function validate(form) {
+  var ok = true
+  for(var i = 0; i < form.childElementCount; i++){if(form.children[i].value === "" || form.children[i].value === null){ok=false}}
+  if(!ok){alert('Please fill in all the fields')}
+  return ok;
+}
+</script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -46,10 +54,10 @@
 		              <% } %>
             </ul>
         <% if(!user) { %>
-             <form class="navbar-form pull-right" action="/login" method="post">
+             <form class="navbar-form pull-right" action="/login" method="post" onsubmit="return validate(this);">
               <input class="span2" name="username" type="text" placeholder="Username">
               <input class="span2" name="password" type="password" placeholder="Password">
-              <button type="submit" class="btn btn-warning">Sign in</button>
+              <button type="submit" class="btn btn-warning" value="abcd">Sign in</button>
             </form>
         <%} else {%>
            <div class="nav-collapse collapse">
@@ -57,11 +65,7 @@
                 <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome back, <% if(user.fullname != null) { %><%= user.fullname.split(/\b/)[0] %><%} else {%><%= user.username %><%}%> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/profile">View My Profile...</a></li>
-                  <li class="divider"></li>
-                  <li class="nav-header">Help</li>
-                  <li><a href="/help">View Help</a></li>
-                  <li><a href="/contactus">Contact Us</a></li>
+                  <li><a href="/account">View My Profile...</a></li>
                   <li class="divider"></li>
                   <li><a href="/logout">Logout</a></li>
                 </ul>

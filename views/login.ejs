@@ -1,3 +1,4 @@
+
 <% layout('layout') -%>
 <% if (message) { %>
 <p><%= message %></p>
@@ -37,11 +38,19 @@
       }
 
     </style>
-<form action="/login" method="post" class="form-signin">
+<script>
+function validate(form) {
+  var ok = true
+  for(var i = 0; i < form.childElementCount; i++){if(form.children[i].tagName.toLowerCase() != "label"){if(form.children[i].value === "" || form.children[i].value === null){ok=false}}}
+  if(!ok){alert('Please fill in all the fields')}
+  return ok;
+}
+</script>
+<form action="/login" method="post" class="form-signin" onsubmit="return validate(this);">
 	        <input type="text" name="username" class="input-block-level" placeholder="Username">
         <input type="password" name="password" class="input-block-level" placeholder="Password">
         <label class="checkbox">
           <input type="checkbox" name="rememberme"> Remember me
         </label>
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+        <button class="btn btn-large btn-primary" type="submit" value="abcd">Sign in</button>
 </form>
