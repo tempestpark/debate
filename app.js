@@ -40,16 +40,16 @@ var generate_mongo_url = function(obj){
 }
 var mongourl = generate_mongo_url(mongo);
 
-mongoose.connect(mongourl)
+mongoose.connect(mongourl);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() {
   log.log('Connected to DB');
 });
 
-var port = process.env.VMC_APP_PORT || 3000
+var port = process.env.VMC_APP_PORT || 3000;
 if(process.argv.indexOf('-p') > -1) {
-    port = process.argv[process.argv.indexOf('-p') + 1]
+    port = process.argv[process.argv.indexOf('-p') + 1];
 }
 
 // User Schema
@@ -123,7 +123,7 @@ passport.serializeUser(function(user, done) {
         user.save( function (err) {
           if (err) return done(err);
           return done(null, user.get('accessToken'));
-        })
+        });
       }
     });
   };
@@ -227,10 +227,10 @@ app.post('/login',
 //   acheive the same functionality.
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err) }
+    if (err) { return next(err) };
     if (!user) {
       req.session.messages =  [info.message];
-      return res.redirect('/login')
+      return res.redirect('/login');
     }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
@@ -249,20 +249,22 @@ app.get('/register', ensureNotAuthenticated, function(req, res) {
   });
 
 app.post('/register', function(req, res) {
-	var username = req.param('username')
-	var email = req.param('email')
-	var password = req.param('password')
-	var fullname = req.param('fullname')
+	var username = req.param('username');
+	var email = req.param('email');
+	var password = req.param('password');
+	var fullname = req.param('fullname');
 	var usr = new User({ username: username, email: email, password: password, fullname: fullname });
 	usr.save(function(err) {
 	  if(err) {
  	   log.log(err);
 	  } else {
  	   log.log('user: ' + usr.username + " saved.");
-	 }
-  res.redirect('/login')
+	 };
+  res.redirect('/login');
 });
-})
+});
+
+require('./routes')(app, mongoose)
 
 app.listen(port, function() {
   log.log('Express server listening on port 3000');
