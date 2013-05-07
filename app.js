@@ -185,13 +185,20 @@ app.configure(function() {
   app.use( function (req, res, next) {
     if ( req.method == 'POST' && req.url == '/login' ) {
       if ( req.body.rememberme ) {
-        req.session.cookie.maxAge = 2592000000; // 30*24*60*60*1000 Remember me for 30 days
+        req.session.cookie.maxAge = 2592000000; // 30*24*60*60*1000 Rememeber me for 30 days
       } else {
         req.session.cookie.expires = false;
       }
     }
     next();
   });
+
+    // Handle 500
+  app.use(function(error, req, res, next) {
+      res.status(500);
+     res.render('500.ejs', {title:'500: Internal Server Error', error: error});
+  });
+  
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
   app.use(passport.initialize());
@@ -199,10 +206,8 @@ app.configure(function() {
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
 });
-// handles 500 hopefully
-app.get('views/500', function(req, res){
-  res.render('500', { user: req.user });
-});
+
+ 
 
 // This maps urls to templates.
 app.get('/', function(req, res){
@@ -325,4 +330,12 @@ function ensureAuthenticated(req, res, next) {
 function ensureNotAuthenticated(req, res, next) {
   if (!req.isAuthenticated()) { return next(); }
   res.redirect('/');
+
+
+  // Handle 500
+  app.use(function(error, req, res, next) {
+      res.status(500);
+     res.render('500.ejs', {title:'500: Internal Server Error', error: error});
+  });
+
 }
