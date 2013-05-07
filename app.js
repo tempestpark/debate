@@ -192,6 +192,13 @@ app.configure(function() {
     }
     next();
   });
+
+    // Handle 500
+  app.use(function(error, req, res, next) {
+      res.status(500);
+     res.render('500.ejs', {title:'500: Internal Server Error', error: error});
+  });
+  
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
   app.use(passport.initialize());
@@ -200,6 +207,7 @@ app.configure(function() {
   app.use(app.router);
 });
 
+ 
 
 // This maps urls to templates.
 app.get('/', function(req, res){
@@ -322,4 +330,8 @@ function ensureAuthenticated(req, res, next) {
 function ensureNotAuthenticated(req, res, next) {
   if (!req.isAuthenticated()) { return next(); }
   res.redirect('/');
+
+
+
+
 }
