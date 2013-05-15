@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "Authors": "James Spencer,Jackson Roberts, David Johns",
   "dependencies": {
-
     "express": "~3.2.2",
     "connect-flash": "~0.1.0",
     "ejs": "~0.8.3",
@@ -14,7 +13,8 @@
     "mongoose": "~3.6.9",
     "bcrypt-nodejs": "0.0.3",
     "node-logentries": "0.0.2",
-    "socket.io": "~0.9.13"
+    "socket.io": "~0.9.13",
+    "colors": "~0.6.0-1"
   },
   "scripts": {
     "start": "node app.js"
