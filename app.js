@@ -1,11 +1,10 @@
 
-var express=require("express"),passport=require("passport"),app=express(),LocalStrategy=require("passport-local").Strategy,mongodb=require("mongodb"),mongoose=require("mongoose"),bcrypt=require("bcrypt-nodejs"),SALT_WORK_FACTOR=10,http=require("http"),server=http.createServer(app),io=require("socket.io").listen(server),colors=require("colors"),FacebookStrategy=require('passport-facebook').Strategy;
-
+var express=require("express"),passport=require("passport"),app=express(),LocalStrategy=require("passport-local").Strategy,mongodb=require("mongodb"),mongoose=require("mongoose"),bcrypt=require("bcrypt-nodejs"),SALT_WORK_FACTOR=10,http=require("http"),server=http.createServer(app),io=require("socket.io").listen(server),colors=require("colors");
 if(require('fs').existsSync('config.js')) {
   var config = require('./config');
 } else {
   var config = {
-    
+
   }
 }
 
