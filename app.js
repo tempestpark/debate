@@ -1,7 +1,10 @@
 
 var express=require("express"),passport=require("passport"),app=express(),LocalStrategy=require("passport-local").Strategy,mongodb=require("mongodb"),mongoose=require("mongoose"),bcrypt=require("bcrypt-nodejs"),SALT_WORK_FACTOR=10,http=require("http"),server=http.createServer(app),io=require("socket.io").listen(server),colors=require("colors");
 
-
+if(require('os').platform() != 'win32') {
+  var replify = require('replify');
+  replify('realtime', app);
+}
 
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
