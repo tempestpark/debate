@@ -52,7 +52,12 @@ var generate_mongo_url = function(obj){
     }
 };
 
-var mongourl = config.mongo.url || generate_mongo_url(mongo);
+var mongourl;
+if(config.mongo.url) {
+  mongourl =  config.mongo.url;
+} else {
+  mongourl = generate_mongo_url(mongo);
+}
 
 mongoose.connect(mongourl);
 var db = mongoose.connection;
