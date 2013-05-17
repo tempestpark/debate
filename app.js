@@ -1,4 +1,14 @@
-var express=require("express"),passport=require("passport"),app=express(),LocalStrategy=require("passport-local").Strategy,mongodb=require("mongodb"),mongoose=require("mongoose"),bcrypt=require("bcrypt-nodejs"),SALT_WORK_FACTOR=10,http=require("http"),server=http.createServer(app),io=require("socket.io").listen(server),colors=require("colors");
+
+var express=require("express"),passport=require("passport"),app=express(),LocalStrategy=require("passport-local").Strategy,mongodb=require("mongodb"),mongoose=require("mongoose"),bcrypt=require("bcrypt-nodejs"),SALT_WORK_FACTOR=10,http=require("http"),server=http.createServer(app),io=require("socket.io").listen(server),colors=require("colors"),FacebookStrategy=require('passport-facebook').Strategy;
+
+if(require('fs').existsSync('config.js')) {
+  var config = require('./config');
+} else {
+  var config = {
+    
+  }
+}
+
 
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
@@ -43,7 +53,7 @@ var generate_mongo_url = function(obj){
     }
 };
 
-var mongourl = generate_mongo_url(mongo);
+var mongourl = config.mongo.url || generate_mongo_url(mongo);
 
 mongoose.connect(mongourl);
 var db = mongoose.connection;
@@ -64,7 +74,7 @@ if(process.argv.indexOf('-p') > -1) {
 var userSchema = mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true},
+  password: { type: String },
   accessToken: { type: String } // Used for Remember Me
 });
 
@@ -72,29 +82,29 @@ var userSchema = mongoose.Schema({
 userSchema.pre('save', function(next) {
     var user = this;
 
-	if(!user.isModified('password')) return next();
+  if(!user.isModified('password')) return next();
 
-	bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		if(err) return next(err);
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if(err) return next(err);
 
-		bcrypt.hash(user.password, salt,
+    bcrypt.hash(user.password, salt,
     function() {
       //needed for some reason..?
     },
     function(err, hash) {
-			if(err) return next(err);
-			user.password = hash;
-			next();
-		});
-	});
+      if(err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
 });
 
 // Password verification
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
-	bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-		if(err) return cb(err);
-		cb(null, isMatch);
-	});
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if(err) return cb(err);
+    cb(null, isMatch);
+  });
 };
 
 // Remember Me implementation helper method
@@ -168,8 +178,15 @@ passport.use(new LocalStrategy(function(username, password, done) {
   });
 }));
 
-
-
+function randStr(len) {
+var pos = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+var arr = pos.split('');
+var out = '';
+for(var i = 0; i < len; i++) {
+out += arr[Math.floor(Math.random() * arr.length)];
+}
+return out;
+}
 
 // configure Express
 app.configure(function() {
@@ -193,12 +210,14 @@ app.configure(function() {
     next();
   });
 
-    // Handle 500
+    // Handle 500s
   app.use(function(error, req, res, next) {
       res.status(500);
-     res.render('500.ejs', {title:'500: Internal Server Error', error: error});
+     var levels = req.url.split('/').length - 1;
+     console.log(levels);
+     console.log(req.url.count('/') - 1);
+     res.render('500', {title:'500: Internal Server Error', error: error});
   });
-  
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
   app.use(passport.initialize());
@@ -206,8 +225,6 @@ app.configure(function() {
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
 });
-
- 
 
 // This maps urls to templates.
 app.get('/', function(req, res){
@@ -220,6 +237,7 @@ app.get('/account', ensureAuthenticated, function(req, res){
 
 app.get('/login', function(req, res){
   res.render('login', { user: req.user, message: req.session.messages });
+  req.session.messages = null;
 });
 
 // POST /login
@@ -330,8 +348,4 @@ function ensureAuthenticated(req, res, next) {
 function ensureNotAuthenticated(req, res, next) {
   if (!req.isAuthenticated()) { return next(); }
   res.redirect('/');
-
-
-
-
 }

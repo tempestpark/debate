@@ -47,7 +47,11 @@ function validate(form) {
 }
 </script>
 <form action="/login" method="post" class="form-signin" onsubmit="return validate(this);">
-	        <input type="text" name="username" class="input-block-level" placeholder="Username">
+        <% if(message) { %><div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4><i class="icon-warning-sign"></i> Oh Snap!</h4>
+        Change a few things up and try submitting again.</div><% } %>
+	      <input type="text" name="username" class="input-block-level" placeholder="Username">
         <input type="password" name="password" class="input-block-level" placeholder="Password">
         <label class="checkbox">
           <input type="checkbox" name="rememberme"> Remember me
