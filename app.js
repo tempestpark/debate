@@ -56,7 +56,7 @@ if(require('fs').existsSync('config.js')) {
   }
 }
 
-var mongourl;
+var mongourl = config.mongo.url;
 
 
 mongoose.connect(mongourl);
