@@ -6,6 +6,45 @@ if(require('os').platform() != 'win32') {
   replify('realtime', app);
 }
 
+if(process.argv.indexOf('--dev') > -1) {
+var open = require('open');
+open('http://localhost:3000');
+var net = require("net"),
+    repl = require("repl");
+net.createServer(function (socket) {
+var remote = repl.start("node::remote> ", socket);
+  //Adding "mood" and "bonus" to the remote REPL's context.
+  remote.context.http = http;
+  remote.context.app = app;
+  remote.context.express = express;
+  remote.context.mongoose = mongoose;
+  remote.context.socketio = io;
+  remote.context.colors= colors;
+  remote.context.quit = function() {
+    process.exit(1);
+  };
+}).listen(8000, function() {
+  console.log();
+  log.log('Started REPL server on port :8000'.red, 'debug');
+  console.log();
+});
+
+setTimeout(function() {
+var local = repl.start("node::local> ");
+
+  local.context.http = http;
+  local.context.app = app;
+  local.context.express = express;
+  local.context.mongoose = mongoose;
+  local.context.socketio = io;
+  local.context.colors = colors;
+  local.context.quit = function() {
+    process.exit(1);
+  };
+}, 5000);
+}
+
+
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
     var mongo = env['mongodb-1.8'][0]['credentials'];
@@ -56,7 +95,7 @@ if(require('fs').existsSync('config.js')) {
     mongo: {
       url: generate_mongo_url(mongo)
     }
-  }
+  };
 }
 
 var mongourl = config.mongo.url;
