@@ -9,26 +9,6 @@ if(require('os').platform() != 'win32') {
 if(process.argv.indexOf('--dev') > -1) {
 var open = require('open');
 open('http://localhost:3000');
-var net = require("net"),
-    repl = require("repl");
-net.createServer(function (socket) {
-  var remote = repl.start("node::remote> ", socket);
-  //Adding "mood" and "bonus" to the remote REPL's context.
-  remote.context.http = http;
-  remote.context.app = app;
-  remote.context.express = express;
-  remote.context.mongoose = mongoose;
-  remote.context.socketio = io;
-  remote.context.colors= colors;
-  remote.context.server = server;
-  remote.context.quit = function() {
-    process.exit(1);
-  };
-}).listen(8000, function() {
-  console.log();
-  log.log('Started REPL server on port :8000'.red, 'debug');
-  console.log();
-});
 }
 
 
@@ -81,12 +61,28 @@ if(require('fs').existsSync('config.js')) {
   var config = {
     mongo: {
       url: generate_mongo_url(mongo)
-    },
-    repl: {
-      mount: ''
     }
   };
 }
+
+if(process.argv.indexOf('--port') > -1) {
+  port = process.argv[process.argv.indexOf('--port') + 1];
+}
+
+if(process.platform != 'win32') {
+if(process.argv.indexOf('--repl') > -1) {
+  var replport = 8080;
+  if(process.argv[process.argv.indexOf('--repl') + 1] !== null) {
+    replport = process.argv[process.argv.indexOf('--repl') + 1];
+  }
+  var options = {};
+  if(process.argv.indexOf('--user') > -1){options.username=process.argv[process.argv.indexOf('--user') + 1]}
+  if(process.argv.indexOf('--pass') > -1){options.password=processs.argv[process.argv.indexOf('--pass') + 1]}
+  var webrepl = require('webrepl');
+  webrepl.start(replport, options);
+}
+}
+
 
 var mongourl = config.mongo.url;
 
@@ -366,35 +362,6 @@ function validateEmail(email) {
 require('./routes')(app, mongoose);
 
 var util = require('util');
-
-var api = function(req, res) {
-  // var eval = (1,eval);
-  var code = req.body.method+' '+req.body.params.join(' ');
-  var evalError;
-  var result;
-  try {
-    result = util.inspect(eval(code), true, 10);
-    console.log(result);
-    evalError = null;
-  } catch (error) {
-    console.log(error);
-    evalError = {message: error.toString()};
-    result = null;
-  }
-  var out = {result:result, error:evalError, id:req.body.id};
-  res.send(out);
-};
-
-
-app.post(config.repl.mount + '/api', api);
-app.get(config.repl.mount + '/repl', function(req, res) {
-  var upslashes = '';
-  var no_slashes = req.url.split("/").length - 1;
-  for(var i = 0; i < no_slashes; i++) {
-    upslashes += '../';
-  }
-  res.render('terminal', { upslashes: upslashes, mount: config.repl.mount });
-});
 
 app.get('/styles/main.css', function(req, res) {
   var upslashes = '';
