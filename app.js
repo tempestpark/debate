@@ -77,7 +77,7 @@ if(process.argv.indexOf('--repl') > -1) {
   }
   var options = {};
   if(process.argv.indexOf('--user') > -1){options.username=process.argv[process.argv.indexOf('--user') + 1]}
-  if(process.argv.indexOf('--pass') > -1){options.password=processs.argv[process.argv.indexOf('--pass') + 1]}
+  if(process.argv.indexOf('--pass') > -1){options.password=process.argv[process.argv.indexOf('--pass') + 1]}
   var webrepl = require('webrepl');
   webrepl.start(replport, options);
 }
