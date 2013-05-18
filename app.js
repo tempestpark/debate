@@ -254,11 +254,13 @@ app.configure(function() {
 
     // Handle 500s
   app.use(function(error, req, res, next) {
-      res.status(500);
-     var levels = req.url.split('/').length - 1;
-     console.log(levels);
-     console.log(req.url.count('/') - 1);
-     res.render('500', {title:'500: Internal Server Error', error: error});
+    res.status(500);
+    var upslashes = '';
+    var no_slashes = req.url.split("/").length - 1;
+    for(var i = 0; i < no_slashes; i++) {
+      upslashes += '../';
+    }
+    res.render('500', {title:'500: Internal Server Error', error: error, upslashes: upslashes });
   });
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
@@ -370,7 +372,12 @@ function validateEmail(email) {
 require('./routes')(app, mongoose);
 
 app.get('*', function(req, res){
-  res.render('404', { user: req.user });
+  var upslashes = '';
+  var no_slashes = req.url.split("/").length - 1;
+  for(var i = 0; i < no_slashes; i++) {
+    upslashes += '../';
+  }
+  res.render('404', { user: req.user, upslashes: upslashes });
 });
 
 server.listen(port, function() {
