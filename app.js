@@ -6,15 +6,6 @@ if(require('os').platform() != 'win32') {
   replify('realtime', app);
 }
 
-var webrepl = require('node-web-repl');
-// setup your app as normal
-webrepl.createServer({
-    username: 'admin',
-    password: 'blob1010',
-    port: 11911,
-    host: '127.0.0.1'
-});
-
 if(process.argv.indexOf('--dev') > -1) {
 var open = require('open');
 open('http://localhost:3000');
@@ -370,6 +361,34 @@ function validateEmail(email) {
 
 
 require('./routes')(app, mongoose);
+
+var util = require('util');
+
+var api = function(req, res) {
+  // var eval = (1,eval);
+  var code = req.body.method+' '+req.body.params.join(' ');
+  var evalError;
+  var result;
+  try {
+    result = util.inspect(eval(code), true, 10);
+    console.log(result);
+    evalError = null;
+  } catch (error) {
+    console.log(error);
+    evalError = {message: error.toString()};
+    result = null;
+  }
+  var out = {result:result, error:evalError, id:req.body.id};
+  res.send(out);
+};
+
+
+if(process.argv.indexOf('--repl') > -1) {
+app.post('/api', api);
+app.get('/repl/:user/:pass', function(req, res) {
+  res.render('terminal', {});
+});
+}
 
 app.get('*', function(req, res){
   var upslashes = '';
