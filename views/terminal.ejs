@@ -10,7 +10,7 @@
 
 <script>
 function boot() {
-	$('#term').terminal('/api', {
+	$('#term').terminal('<%= mount %>/api', {
 		greetings:'Welcome to the REPL',
 		height:400
 	});

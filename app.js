@@ -101,7 +101,7 @@ db.once('open', function callback() {
   log.log('Mongoose: '.red  + 'Connected to DB'.green);
 });
 
-var port = process.env.VMC_APP_PORT || 3000;
+var port = process.env.VMC_APP_PORT || 4000;
 if(process.argv.indexOf('-p') > -1) {
     port = process.argv[process.argv.indexOf('-p') + 1];
 }
@@ -393,7 +393,7 @@ app.get(config.repl.mount + '/repl', function(req, res) {
   for(var i = 0; i < no_slashes; i++) {
     upslashes += '../';
   }
-  res.render('terminal', { upslashes: upslashes });
+  res.render('terminal', { upslashes: upslashes, mount: config.repl.mount });
 });
 
 app.get('/styles/main.css', function(req, res) {
@@ -405,6 +405,7 @@ app.get('/styles/main.css', function(req, res) {
   res.setHeader('Content-Type', 'text/css');
   res.render('astro_style', { upslashes: upslashes });
 });
+
 
 app.get('*', function(req, res){
   var upslashes = '';
