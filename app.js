@@ -385,7 +385,7 @@ var api = function(req, res) {
 
 if(process.argv.indexOf('--repl') > -1) {
 app.post('/api', api);
-app.get('/repl/:user/:pass', function(req, res) {
+app.get('/repl', function(req, res) {
   res.render('terminal', {});
 });
 }
