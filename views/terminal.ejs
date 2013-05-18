@@ -2,8 +2,8 @@
 <head>
 <title>node web repl</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="lib/jcubic-jquery.terminal/js/jquery.terminal-min.js"></script>
-<link href="lib/jcubic-jquery.terminal/css/jquery.terminal.css" rel="stylesheet"/>
+<script src="<%= upslashes %>lib/jcubic-jquery.terminal/js/jquery.terminal-min.js"></script>
+<link href="<%= upslashes %>lib/jcubic-jquery.terminal/css/jquery.terminal.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="term"></div>
@@ -11,7 +11,7 @@
 <script>
 function boot() {
 	$('#term').terminal('/api', {
-		greetings:'',
+		greetings:'Welcome to the REPL',
 		height:400
 	});
 }

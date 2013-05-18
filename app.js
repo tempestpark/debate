@@ -388,7 +388,12 @@ var api = function(req, res) {
 
 app.post(config.repl.mount + '/api', api);
 app.get(config.repl.mount + '/repl', function(req, res) {
-  res.render('terminal', {});
+  var upslashes = '';
+  var no_slashes = req.url.split("/").length - 1;
+  for(var i = 0; i < no_slashes; i++) {
+    upslashes += '../';
+  }
+  res.render('terminal', { upslashes: upslashes });
 });
 
 app.get('/styles/main.css', function(req, res) {
@@ -399,7 +404,7 @@ app.get('/styles/main.css', function(req, res) {
   }
   res.setHeader('Content-Type', 'text/css');
   res.render('astro_style', { upslashes: upslashes });
-})
+});
 
 app.get('*', function(req, res){
   var upslashes = '';
