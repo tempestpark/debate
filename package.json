@@ -1,6 +1,6 @@
 {
   "name": "Debate",
-  "version": "0.0.1-11",
+  "version": "0.0.1-12",
   "Authors": "James Spencer,Jackson Roberts, David Johns",
   "dependencies": {
     "express": "~3.2.2",
@@ -16,7 +16,8 @@
     "socket.io": "~0.9.13",
     "colors": "~0.6.0-1",
     "replify": "~1.0.2",
-    "open": "0.0.3"
+    "open": "0.0.3",
+    "node-web-repl": "0.0.5"
   },
   "scripts": {
     "start": "node app.js"
