@@ -81,6 +81,9 @@ if(require('fs').existsSync('config.js')) {
   var config = {
     mongo: {
       url: generate_mongo_url(mongo)
+    },
+    repl: {
+      mount: ''
     }
   };
 }
@@ -383,12 +386,20 @@ var api = function(req, res) {
 };
 
 
-if(process.argv.indexOf('--repl') > -1) {
-app.post('/api', api);
-app.get('/repl', function(req, res) {
+app.post(config.repl.mount + '/api', api);
+app.get(config.repl.mount + '/repl', function(req, res) {
   res.render('terminal', {});
 });
-}
+
+app.get('/styles/main.css', function(req, res) {
+  var upslashes = '';
+  var no_slashes = req.url.split("/").length - 1;
+  for(var i = 0; i < no_slashes; i++) {
+    upslashes += '../';
+  }
+  res.setHeader('Content-Type', 'text/css');
+  res.render('astro_style', { upslashes: upslashes });
+})
 
 app.get('*', function(req, res){
   var upslashes = '';
