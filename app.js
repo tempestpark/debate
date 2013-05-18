@@ -69,23 +69,7 @@ if(process.argv.indexOf('--port') > -1) {
   port = process.argv[process.argv.indexOf('--port') + 1];
 }
 
-if(process.platform != 'win32') {
-if(process.argv.indexOf('--repl') > -1) {
-  var replport = 8080;
-  if(process.argv[process.argv.indexOf('--repl') + 1] !== null) {
-    replport = process.argv[process.argv.indexOf('--repl') + 1];
-  }
-  var options = {};
-  if(process.argv.indexOf('--user') > -1){options.username=process.argv[process.argv.indexOf('--user') + 1]}
-  if(process.argv.indexOf('--pass') > -1){options.password=process.argv[process.argv.indexOf('--pass') + 1]}
-  var webrepl = require('webrepl');
-  webrepl.start(replport, options);
-}
-}
-
-
 var mongourl = config.mongo.url;
-
 
 mongoose.connect(mongourl);
 var db = mongoose.connection;
