@@ -12,7 +12,7 @@ Install instructions:
 
 3. to run the app simply run: node app.js
 
-4. go to http://localhost:3000
+4. go to http://localhost:4000
 
 Make sure mongodb is running before starting the server.
 
