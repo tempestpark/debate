@@ -6,7 +6,8 @@ var debateSchema = mongoose.Schema({
   for_against: { type: Boolean , required: true, unique: false },
   createdate: {type: Date, default: Date.now,  required: true},
   author: { type: String, required: true, unique: true },
-  githuballow (type:Boolean, required: true, default:true),
+  githuballow: (type:Boolean, required: true, default:true),
+  location:{type: String, required: true},
   replies: [commentSchema]
 });
 }
