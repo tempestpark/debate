@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <meta charset="utf-8">
     <title>Debate</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,10 @@
     <!-- Le styles -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
      <link href='https://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>
-    <link href='css/corgi.css' rel='stylesheet' type='text/css'>
+    
     <link rel="stylesheet" href="css/elusive-webfont.css">
     <link rel="stylesheet" type="text/css" href="css/autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="/css/flat-ui.css">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -80,7 +82,7 @@ function validate(form) {
     </div>
 
     <div class="container">
-      <a href="https://github.com/dave911d/debate"><img style="position: absolute; top: 59px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+      <a href="https://github.com/dave911d/debate"><img style="position: absolute; top: 53px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 
       <%- body %>
 
@@ -89,14 +91,29 @@ function validate(form) {
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/public/js/jquery.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/ember.js/1.0.0-rc.3/ember.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jade/0.27.7/jade.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jade/0.27.7/jade.min.js"></script>
     <script src="/js/typeahead.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="public/js/autocomplete.js"></script>
-    <script type="text/javascript">
+    <script src="js/autocomplete.js"></script>
+    <script src="locations.js"></script>
+
+        <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="js/flatui-checkbox.js"></script>
+    <script src="js/flatui-radio.js"></script>
+    <script src="js/jquery.tagsinput.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
+    <script src="js/jquery.stacktable.js"></script>
+    <script src="js/application.js"></script>
+<script>
+if(document.getElementById('locations')) {
+  var widget = new AutoComplete('location', locations);
+}
+</script>
+<script type="text/javascript">
 /* <![CDATA[ */
 $(function() {
   var input = document.createElement("input");

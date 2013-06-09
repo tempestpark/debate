@@ -89,6 +89,7 @@ if(process.argv.indexOf('-p') > -1) {
 // User Schema
 var userSchema = mongoose.Schema({
   username: { type: String, required: true, unique: true },
+  fullname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
   location: {type: String,required:true},
@@ -255,7 +256,7 @@ app.get('/account', ensureAuthenticated, function(req, res){
 });
 
 app.get('/login', function(req, res){
-  res.render('login', { user: req.user, message: req.session.messages });
+  res.render('login', { user: req.user, locations: require('./locations.json').locations, message: req.session.messages });
   req.session.messages = null;
 });
 
@@ -306,19 +307,26 @@ app.get('/register', function(req, res){
   } else if(req.param('err') == 5) {
     taken = {username:false, email:false,invalidEmail:true};
   }
-    res.render('register', { user: req.user, message: req.session.messages, error:false, taken:taken });
+    res.render('register', { user: req.user, locations: require('./locations.json').locations, message: req.session.messages, error:false, taken:taken });
+});
+
+app.get('/locations.js', function(req, res) {
+  res.setHeader('Content-Type', 'text/javascript');
+  res.end('var locations = ' + JSON.stringify(require('./locations.json').locations));
 });
 
 app.post('/register', function(req, res) {
   var username = req.param('username');
   var password = req.param('password');
   var email = req.param('email');
-if(username === null || password === null || email === null || username === "" || password === "" || email === "") {
+  var location = req.param('location');
+  var fullname = req.param('fullname');
+if(username === null || password === null || email === null || fullname === null|| location === null || username === "" || password === "" || email === "" || location === "" || fullname === "") {
     res.redirect('/register?err=4');
   } else if(!validateEmail(email)) {
     res.redirect('/register?err=5');
   } else {
-  var usr = new User({ username: username, email: email, password: password });
+  var usr = new User({ username: username, email: email, password: password, location: location, fullname: fullname });
   usr.save(function(err) {
     if(err) {
       console.log(err.key);
@@ -365,7 +373,7 @@ app.get('*', function(req, res){
   for(var i = 0; i < no_slashes; i++) {
     upslashes += '../';
   }
-  res.render('404', { user: req.user, upslashes: upslashes });
+  res.render('404', { user: req.user, locations: require('./locations.json').locations, upslashes: upslashes });
 });
 
 server.listen(port, function() {
