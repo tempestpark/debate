@@ -319,7 +319,7 @@ app.post('/register', function(req, res) {
   var username = req.param('username');
   var password = req.param('password');
   var email = req.param('email');
-  var location = req.param('location');
+  var location = req.param('herolist');
   var fullname = req.param('fullname');
 if(username === null || password === null || email === null || fullname === null|| location === null || username === "" || password === "" || email === "" || location === "" || fullname === "") {
     res.redirect('/register?err=4');
