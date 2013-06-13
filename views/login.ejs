@@ -51,6 +51,10 @@ function validate(form) {
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4><i class="icon-warning-sign"></i> Oh Snap!</h4>
         Change a few things up and try submitting again.</div><% } %>
+        <% if(isNew) { %><div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4><span class="fui-checkmark-24"></span> Oh, Hey!</h4>
+        Welcome to Debate! You can now sign in!</div><% } %>
 	      <input type="text" name="username" class="input-block-level" placeholder="Username">
         <input type="password" name="password" class="input-block-level" placeholder="Password">
         <label class="checkbox">

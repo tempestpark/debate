@@ -6,10 +6,7 @@ if(require('os').platform() != 'win32') {
   replify('realtime', app);
 }
 
-if(process.argv.indexOf('--dev') > -1) {
-var open = require('open');
-open('http://localhost:3000');
-}
+var dev = false;
 
 
 if(process.env.VCAP_SERVICES){
@@ -67,6 +64,15 @@ if(require('fs').existsSync('config.js')) {
 
 if(process.argv.indexOf('--port') > -1) {
   port = process.argv[process.argv.indexOf('--port') + 1];
+}
+
+if(process.argv.indexOf('--dev') > -1) {
+var open = require('open');
+if(!port) {
+  port = 4000;
+}
+open('http://localhost:' + port || 4000);
+dev = true;
 }
 
 var mongourl = config.mongo.url;
@@ -248,15 +254,19 @@ app.configure(function() {
 
 // This maps urls to templates.
 app.get('/', function(req, res){
-  res.render('index', { user: req.user });
+  res.render('index', { user: req.user, dev: dev });
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { user: req.user });
+  res.render('account', { user: req.user, dev: dev });
 });
 
 app.get('/login', function(req, res){
-  res.render('login', { user: req.user, locations: require('./locations.json').locations, message: req.session.messages });
+  var isNew = false;
+  if(req.param('new') == 1) {
+    isNew = true;
+  }
+  res.render('login', { user: req.user, dev: dev, locations: require('./locations.json').locations, message: req.session.messages, isNew: isNew });
   req.session.messages = null;
 });
 
@@ -307,7 +317,7 @@ app.get('/register', function(req, res){
   } else if(req.param('err') == 5) {
     taken = {username:false, email:false,invalidEmail:true};
   }
-    res.render('register', { user: req.user, locations: require('./locations.json').locations, message: req.session.messages, error:false, taken:taken });
+    res.render('register', { user: req.user, dev: dev, locations: require('./locations.json').locations, message: req.session.messages, error:false, taken:taken });
 });
 
 app.get('/locations.js', function(req, res) {
@@ -339,7 +349,7 @@ if(username === null || password === null || email === null || fullname === null
       }
     } else {
       console.log('user: ' + usr.username + " saved.");
-        res.redirect('/login');
+        res.redirect('/login?new=1');
     }
 
 });
@@ -373,7 +383,7 @@ app.get('*', function(req, res){
   for(var i = 0; i < no_slashes; i++) {
     upslashes += '../';
   }
-  res.render('404', { user: req.user, locations: require('./locations.json').locations, upslashes: upslashes });
+  res.render('404', { user: req.user, dev: dev, locations: require('./locations.json').locations, upslashes: upslashes });
 });
 
 server.listen(port, function() {
